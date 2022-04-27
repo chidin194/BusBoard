@@ -5,6 +5,8 @@ const getLiveArrivalPredictions = (userStopCode) => {
 
         const sortedArrivals = JSON.parse(body).sort((b1, b2) => b1.timeToStation - b2.timeToStation);
 
+        console.log(`Bus stop: ${sortedArrivals[0].stationName}`);
+
         sortedArrivals.map(a => {
             if(sortedArrivals.indexOf(a) <= 4) {
                 let arrivalTime = Math.floor(a.timeToStation/60);
@@ -14,7 +16,6 @@ const getLiveArrivalPredictions = (userStopCode) => {
         })
     });
 }
-
 module.exports = {getLiveArrivalPredictions};
 
 // 490008660N
