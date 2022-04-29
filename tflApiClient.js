@@ -44,6 +44,31 @@ async function getArrivals(userStopCode) {
     return data
 }
 
-module.exports = {logArrivals, getArrivals, convertArrivalsToArrivalObjects};
+const fetchBusStops = (data) => {
+    return new Promise((resolve, reject) => {
+        request(`https://api.tfl.gov.uk/StopPoint?stopTypes=NaptanPublicBusCoachTram&lat=
+${data[0]}&lon=${data[1]}&radius=800`, function (error, response, body) {
+            if (response.statusCode === 200 & !error) {
+                try {
+                    const busStops = JSON.parse(body);
+                    const closestBusStops = [busStops['stopPoints'][0], busStops['stopPoints'][1]];
+                    resolve(closestBusStops);
+                } catch {
+                    throw new Error('It looks like there are no bus stops nearby. Please try again')
+                }
+                
+            } else {
+                reject(Error("Unable to complete request"))
+            }
+        })
+    })
+}
+
+async function getBusStops(data) {
+    const nearestBusStops = await Promise.resolve(fetchBusStops(data));
+    return nearestBusStops
+}
+
+module.exports = {logArrivals, getArrivals, convertArrivalsToArrivalObjects, fetchBusStops, getBusStops};
 
 // 490008660N

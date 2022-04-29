@@ -17,10 +17,10 @@ const {validatePostcode, getPostCodeCoordinates, fetchBusStops, getBusStops} = r
         // validatePostcode('tw94bh')
     // getArrivals('490008660N')
 
-        const coordinates = await getPostCodeCoordinates('tw94bh');
-        const nearestBusStops = await getBusStops(coordinates);
-        const arrivalsClosestBusStop = await getArrivals(nearestBusStops[0].naptanId);
-        const arrivalsSecondBusStop = await getArrivals(nearestBusStops[1].naptanId);
+        // const coordinates = await getPostCodeCoordinates('tw94bh');
+        // const nearestBusStops = await getBusStops(coordinates);
+        // const arrivalsClosestBusStop = await getArrivals(nearestBusStops[0].naptanId);
+        // const arrivalsSecondBusStop = await getArrivals(nearestBusStops[1].naptanId);
 
     console.log(arrivalsClosestBusStop);
 }
