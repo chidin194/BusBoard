@@ -31,9 +31,4 @@ const fetchPostCodeCoordinates = (postCode) => {
         })
 }
 
-async function getPostCodeCoordinates(postCode) {
-    const data = await Promise.resolve(fetchPostCodeCoordinates(postCode));
-    return data
-}
-
-module.exports = {getPostCodeCoordinates}
+module.exports = {fetchPostCodeCoordinates}

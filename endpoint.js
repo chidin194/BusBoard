@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const {getArrivals, logArrivals, getLiveArrivalPredictions,  convertArrivalsToArrivalObjects, getBusStops} = require('./tflApiClient');
-const {getPostCodeCoordinates} = require('./postcodeApiClient')
+const {getArrivals, logArrivals, getLiveArrivalPredictions,  convertArrivalsToArrivalObjects, fetchBusStops} = require('./tflApiClient');
+const {fetchPostCodeCoordinates} = require('./postcodeApiClient')
 const {Arrival} = require('./Arrival')
 
 
@@ -12,13 +12,19 @@ app.set('query parser', 'simple');
 
 app.get(`/departureBoards/:postcode`, async (req, res, err) => {
 
-    const coordinates = await getPostCodeCoordinates(req.params.postcode);
-    const nearestBusStops = await getBusStops(coordinates);
+    try {
+        const coordinates = await Promise.resolve(fetchPostCodeCoordinates(req.params.postcode));
+        const nearestBusStops = await Promise.resolve(fetchBusStops(coordinates));
 
-    const arrivalsClosestBusStop = await getArrivals(nearestBusStops[0].naptanId);
-    const arrivalsSecondBusStop = await getArrivals(nearestBusStops[1].naptanId);
+        const arrivalsClosestBusStop = await Promise.resolve(getLiveArrivalPredictions(nearestBusStops[0].naptanId));
+        const arrivalsSecondBusStop = await Promise.resolve(getLiveArrivalPredictions(nearestBusStops[1].naptanId));
 
-    res.send([arrivalsClosestBusStop, arrivalsSecondBusStop]);
+        res.send([arrivalsClosestBusStop, arrivalsSecondBusStop]);
+    }
+
+    catch {
+        throw new Error('Unable to complete request, no data found. Please try again')
+    }
 
 })
 

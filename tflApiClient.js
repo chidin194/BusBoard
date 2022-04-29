@@ -56,7 +56,7 @@ ${data[0]}&lon=${data[1]}&radius=800`, function (error, response, body) {
                 } catch {
                     throw new Error('It looks like there are no bus stops nearby. Please try again')
                 }
-                
+
             } else {
                 reject(Error("Unable to complete request"))
             }
@@ -64,11 +64,6 @@ ${data[0]}&lon=${data[1]}&radius=800`, function (error, response, body) {
     })
 }
 
-async function getBusStops(data) {
-    const nearestBusStops = await Promise.resolve(fetchBusStops(data));
-    return nearestBusStops
-}
-
-module.exports = {logArrivals, getArrivals, convertArrivalsToArrivalObjects, fetchBusStops, getBusStops};
+module.exports = {convertArrivalsToArrivalObjects, fetchBusStops, getLiveArrivalPredictions};
 
 // 490008660N
